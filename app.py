@@ -25,7 +25,17 @@ def save_tasks(tasks):
 def index():
     """Página principal que muestra todas las tareas"""
     tasks = load_tasks()
-    return render_template('index.html', tasks=tasks)
+    search_query = request.args.get('search', '').strip()
+    
+    # Filtrar tareas si hay búsqueda
+    if search_query:
+        filtered_tasks = []
+        for task in tasks:
+            if search_query.lower() in task['text'].lower():
+                filtered_tasks.append(task)
+        tasks = filtered_tasks
+    
+    return render_template('index.html', tasks=tasks, search_query=search_query)
 
 @app.route('/add', methods=['POST'])
 def add_task():

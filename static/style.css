@@ -258,3 +258,381 @@ textarea.form-control {
 .btn-outline-primary:hover::before {
     left: 100%;
 }
+
+/* Estilos para el cuadro de búsqueda */
+.search-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-form .input-group {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.search-form .form-control {
+    border: 2px solid #e9ecef;
+    border-right: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-form .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: #fff;
+}
+
+.search-form .btn {
+    border-radius: 0;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-form .btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.search-form .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.search-form .btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.search-form .btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Animación para el contenedor de búsqueda */
+.search-container {
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para resaltar términos de búsqueda */
+mark {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 0.1rem 0.2rem;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+/* Indicador de búsqueda activa */
+.search-container.active {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+/* Responsive para búsqueda */
+@media (max-width: 768px) {
+    .search-container {
+        padding: 1rem;
+    }
+    
+    .search-form .form-control {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .search-form .btn {
+        padding: 0.6rem 0.8rem;
+    }
+}
+
+/* Efecto de carga para búsqueda */
+.search-loading {
+    position: relative;
+}
+
+.search-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 3rem;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Contenedor de scroll para tareas */
+.tasks-scroll-container {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    margin-right: -10px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 1px solid #e9ecef;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Scroll personalizado para WebKit (Chrome, Safari, Edge) */
+.tasks-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tasks-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+.tasks-scroll-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    border: 1px solid #f1f1f1;
+}
+
+.tasks-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.tasks-scroll-container::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #4e5bc6 0%, #5e377e 100%);
+}
+
+/* Scroll personalizado para Firefox */
+.tasks-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: #667eea #f1f1f1;
+}
+
+/* Efectos de scroll suave */
+.tasks-scroll-container {
+    scroll-behavior: smooth;
+}
+
+/* Indicadores de scroll */
+.tasks-scroll-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(248,249,250,1), rgba(248,249,250,0));
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 10px 10px 0 0;
+}
+
+.tasks-scroll-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, rgba(248,249,250,1), rgba(248,249,250,0));
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Animación de entrada para el contenedor */
+.tasks-scroll-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para scroll */
+@media (max-width: 768px) {
+    .tasks-scroll-container {
+        max-height: 400px;
+        padding-right: 5px;
+        margin-right: -5px;
+    }
+    
+    .tasks-scroll-container::-webkit-scrollbar {
+        width: 6px;
+    }
+}
+
+/* Efecto de hover en el contenedor */
+.tasks-scroll-container:hover {
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+    border-color: #dee2e6;
+}
+
+/* Mejoras para tareas dentro del scroll */
+.tasks-scroll-container .task-item {
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.tasks-scroll-container .task-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Indicador de más contenido */
+.tasks-scroll-container.scrollable::after {
+    content: '↓ Desplázate para ver más';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(102, 126, 234, 0.9), transparent);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 0 0 10px 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Estados del scroll */
+.tasks-scroll-container.scrolling {
+    box-shadow: inset 0 2px 8px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+}
+
+.tasks-scroll-container.scrollable {
+    position: relative;
+}
+
+/* Indicador de scroll en la parte superior */
+.tasks-scroll-container.scrollable::before {
+    content: '↑ Más arriba';
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.9), transparent);
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 10px 10px 0 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tasks-scroll-container.scrollable:hover::before {
+    opacity: 1;
+}
+
+/* Mejoras visuales para el scroll */
+.tasks-scroll-container {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tasks-scroll-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Efecto de desvanecimiento en los bordes */
+.tasks-scroll-container::before,
+.tasks-scroll-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 30px;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.tasks-scroll-container::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(248,249,250,1), rgba(248,249,250,0));
+    border-radius: 10px 10px 0 0;
+}
+
+.tasks-scroll-container::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(248,249,250,1), rgba(248,249,250,0));
+    border-radius: 0 0 10px 10px;
+}
+
+/* Ocultar indicadores cuando no hay scroll */
+.tasks-scroll-container:not(.scrollable)::before,
+.tasks-scroll-container:not(.scrollable)::after {
+    display: none;
+}
+
+/* Animación para nuevas tareas */
+.tasks-scroll-container .task-item {
+    animation: slideInFromRight 0.5s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .tasks-scroll-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+    
+    .tasks-scroll-container::-webkit-scrollbar {
+        width: 12px;
+    }
+}
