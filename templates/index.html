@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h1 class="h3 mb-0 text-center">
+                            <i class="fas fa-tasks me-2"></i>Gestor de Tareas
+                        </h1>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar tareas -->
+                        <form action="{{ url_for('add_task') }}" method="POST" class="mb-4">
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       name="task_text" 
+                                       placeholder="Escribe una nueva tarea..." 
+                                       required>
+                                <button class="btn btn-success btn-lg" type="submit">
+                                    <i class="fas fa-plus me-1"></i>Agregar
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Mensajes flash -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- Lista de tareas -->
+                        <div class="tasks-container">
+                            {% if tasks %}
+                                <h4 class="mb-3">
+                                    <i class="fas fa-list me-2"></i>Tus Tareas
+                                    <span class="badge bg-secondary ms-2">{{ tasks|length }}</span>
+                                </h4>
+                                
+                                <!-- Tareas pendientes -->
+                                {% set pending_tasks = tasks|selectattr('completed', 'equalto', false)|list %}
+                                {% if pending_tasks %}
+                                    <div class="mb-4">
+                                        <h5 class="text-warning">
+                                            <i class="fas fa-clock me-2"></i>Pendientes ({{ pending_tasks|length }})
+                                        </h5>
+                                        {% for task in pending_tasks %}
+                                            <div class="task-item task-pending mb-2">
+                                                <div class="d-flex align-items-center">
+                                                    <button class="btn btn-outline-success btn-sm me-2" 
+                                                            onclick="toggleTask({{ task.id }})"
+                                                            title="Marcar como completada">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                    <span class="task-text flex-grow-1">{{ task.text }}</span>
+                                                    <small class="text-muted me-2">
+                                                        <i class="fas fa-calendar-alt me-1"></i>
+                                                        {{ task.created_at[:10] }}
+                                                    </small>
+                                                    <button class="btn btn-outline-primary btn-sm me-2" 
+                                                            onclick="editTask({{ task.id }})"
+                                                            title="Editar tarea">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger btn-sm" 
+                                                            onclick="deleteTask({{ task.id }})"
+                                                            title="Eliminar tarea">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <!-- Tareas completadas -->
+                                {% set completed_tasks = tasks|selectattr('completed', 'equalto', true)|list %}
+                                {% if completed_tasks %}
+                                    <div class="mb-4">
+                                        <h5 class="text-success">
+                                            <i class="fas fa-check-circle me-2"></i>Completadas ({{ completed_tasks|length }})
+                                        </h5>
+                                        {% for task in completed_tasks %}
+                                            <div class="task-item task-completed mb-2">
+                                                <div class="d-flex align-items-center">
+                                                    <button class="btn btn-success btn-sm me-2" 
+                                                            onclick="toggleTask({{ task.id }})"
+                                                            title="Marcar como pendiente">
+                                                        <i class="fas fa-undo"></i>
+                                                    </button>
+                                                    <span class="task-text flex-grow-1 text-decoration-line-through text-muted">{{ task.text }}</span>
+                                                    <small class="text-muted me-2">
+                                                        <i class="fas fa-calendar-check me-1"></i>
+                                                        {{ task.completed_at[:10] if task.completed_at else task.created_at[:10] }}
+                                                    </small>
+                                                    <button class="btn btn-outline-primary btn-sm me-2" 
+                                                            onclick="editTask({{ task.id }})"
+                                                            title="Editar tarea">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger btn-sm" 
+                                                            onclick="deleteTask({{ task.id }})"
+                                                            title="Eliminar tarea">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                                    <h4 class="text-muted">No hay tareas aún</h4>
+                                    <p class="text-muted">¡Agrega tu primera tarea usando el formulario de arriba!</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleTask(taskId) {
+            window.location.href = `/toggle/${taskId}`;
+        }
+        
+        function deleteTask(taskId) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta tarea?')) {
+                window.location.href = `/delete/${taskId}`;
+            }
+        }
+        
+        function editTask(taskId) {
+            window.location.href = `/edit/${taskId}`;
+        }
+    </script>
+</body>
+</html>

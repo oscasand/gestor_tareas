@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Tarea - Gestor de Tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-warning text-dark">
+                        <h1 class="h3 mb-0 text-center">
+                            <i class="fas fa-edit me-2"></i>Editar Tarea
+                        </h1>
+                    </div>
+                    <div class="card-body">
+                        <!-- Mensajes flash -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- Información de la tarea -->
+                        <div class="mb-4">
+                            <h5>Información de la tarea:</h5>
+                            <div class="bg-light p-3 rounded">
+                                <p class="mb-2"><strong>Estado:</strong> 
+                                    {% if task.completed %}
+                                        <span class="badge bg-success">Completada</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Pendiente</span>
+                                    {% endif %}
+                                </p>
+                                <p class="mb-2"><strong>Creada:</strong> {{ task.created_at[:19].replace('T', ' ') }}</p>
+                                {% if task.completed_at %}
+                                    <p class="mb-0"><strong>Completada:</strong> {{ task.completed_at[:19].replace('T', ' ') }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Formulario de edición -->
+                        <form action="{{ url_for('update_task', task_id=task.id) }}" method="POST">
+                            <div class="mb-4">
+                                <label for="task_text" class="form-label">
+                                    <i class="fas fa-tasks me-2"></i>Texto de la tarea:
+                                </label>
+                                <textarea class="form-control" 
+                                          id="task_text" 
+                                          name="task_text" 
+                                          rows="4" 
+                                          required 
+                                          placeholder="Escribe el texto de la tarea...">{{ task.text }}</textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Puedes escribir varias líneas para tareas más detalladas.
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-arrow-left me-1"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save me-1"></i>Guardar Cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-focus en el textarea
+        document.getElementById('task_text').focus();
+        
+        // Seleccionar todo el texto al hacer focus
+        document.getElementById('task_text').addEventListener('focus', function() {
+            this.select();
+        });
+    </script>
+</body>
+</html>
+
