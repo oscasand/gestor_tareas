@@ -160,3 +160,5 @@ logs/
 # Archivos de configuración local
 config.local.py
 settings.local.py
+
+
